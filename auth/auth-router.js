@@ -36,8 +36,10 @@ router.post("/register", (req, res) => {
           });
       })
       .catch(error => {
+        console.log(error.message)
         res.status(400).json({
-          error: "This username already exists!"
+          error: "This username already exists!!",
+          response: error.response
         });
       });
   }

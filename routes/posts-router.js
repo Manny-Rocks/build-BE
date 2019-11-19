@@ -50,13 +50,15 @@ router.get("/:id", restricted, (req, res) => {
     });
 });
 
+
+
 router.post("/", restricted, (req, res) => {
   const post = req.body;
 
   if (!post.chef_name) {
     res
       .status(400)
-      .json({ error: "Please provide a couple name for the post." });
+      .json({ error: "Please provide a chef name for the post." });
   } else {
     post.user_id = req.decodedToken.subject;
     db("posts")
@@ -84,52 +86,41 @@ router.put("/:id", restricted, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
-  if (!changes.item_name) {
-    res.status(400).json({
-      error: "Please provide a name for the post."
-    });
-  } else {
+  db("posts")
+    .where({ id })
+    .update(changes)
+    .returning("id")
+    .then( count => {
+        res.status(200).json( changes )
+
+      .catch(error => {
+        res.status(500).json({
+          error: "Error with server"
+        })
+      })
+    })
+  })
+
+  router.delete("/:id", restricted, (req, res) => {
+    const { id } = req.params;
     db("posts")
       .where({ id, user_id: req.decodedToken.subject })
-      .update(changes)
+      .del()
       .returning("id")
       .then(count => {
         if (count > 0) {
           res.status(200).json(count);
         } else {
-          res.status(404).json({
-            error: "You cannot access the post with this specific id."
-          });
+          res
+            .status(404)
+            .json({ error: "You cannot access the post with this specific id." });
         }
       })
       .catch(error => {
         res.status(500).json({
-          error: "The post could not be modified."
+          error: "The post could not be removed."
         });
       });
-  }
 });
 
-router.delete("/:id", restricted, (req, res) => {
-  const { id } = req.params;
-  db("posts")
-    .where({ id, user_id: req.decodedToken.subject })
-    .del()
-    .returning("id")
-    .then(count => {
-      if (count > 0) {
-        res.status(200).json(count);
-      } else {
-        res
-          .status(404)
-          .json({ error: "You cannot access the post with this specific id." });
-      }
-    })
-    .catch(error => {
-      res.status(500).json({
-        error: "The post could not be removed."
-      });
-    });
-});
-
-module.exports = router; 
+module.exports = router;
