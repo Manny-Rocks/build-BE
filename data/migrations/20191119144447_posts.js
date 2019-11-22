@@ -7,6 +7,7 @@ exports.up = function(knex) {
       posts.string("item_photo", 255);
       posts.string("chef_location", 255);
       posts.string("item_ingredients", 255);
+      posts.string("instructions",255);
       posts
         .integer("user_id")
         .unsigned()

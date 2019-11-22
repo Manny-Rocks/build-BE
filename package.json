@@ -16,14 +16,16 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Manny-Rocks/build-BE/issues"
+    "url": "https://github.com/bw-chef-portfolio/build-BE/issues"
   },
   "homepage": "https://github.com/Manny-Rocks/build-BE#readme",
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cleaner": "^2.0.0-alpha",
     "cors": "^2.8.5",
     "cross-env": "^6.0.3",
     "dotenv": "^8.2.0",
@@ -31,7 +33,9 @@
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.2",
+    "knex-cleaner": "^1.3.0",
     "morgan": "^1.9.1",
+    "pg": "^7.14.0",
     "sqlite3": "^4.1.0"
   }
 }
